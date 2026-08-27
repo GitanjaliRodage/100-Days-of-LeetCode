@@ -1,0 +1,71 @@
+class Solution {
+    public String lexGreaterPermutation(String s, String target) {
+        int n = s.length();
+
+        // Frequency of characters in s
+        int[] total = new int[26];
+
+        for (char ch : s.toCharArray()) {
+            total[ch - 'a']++;
+        }
+
+        // Try making the string greater at position i.
+        // Rightmost position gives the smallest possible answer.
+        for (int i = n - 1; i >= 0; i--) {
+
+            // Copy the original frequencies
+            int[] freq = total.clone();
+
+            // Use target[0 ... i-1] as the equal prefix
+            boolean possible = true;
+
+            for (int j = 0; j < i; j++) {
+                int idx = target.charAt(j) - 'a';
+
+                if (freq[idx] == 0) {
+                    possible = false;
+                    break;
+                }
+
+                freq[idx]--;
+            }
+
+            if (!possible) {
+                continue;
+            }
+
+            // At position i, choose the smallest character
+            // that is strictly greater than target[i].
+            int targetIdx = target.charAt(i) - 'a';
+
+            for (int c = targetIdx + 1; c < 26; c++) {
+
+                if (freq[c] > 0) {
+
+                    StringBuilder ans = new StringBuilder();
+
+                    // Equal prefix
+                    for (int j = 0; j < i; j++) {
+                        ans.append(target.charAt(j));
+                    }
+
+                    // Make it strictly greater here
+                    ans.append((char) ('a' + c));
+                    freq[c]--;
+
+                    // Fill remaining characters in sorted order
+                    for (int x = 0; x < 26; x++) {
+                        while (freq[x] > 0) {
+                            ans.append((char) ('a' + x));
+                            freq[x]--;
+                        }
+                    }
+
+                    return ans.toString();
+                }
+            }
+        }
+
+        return "";
+    }
+}
