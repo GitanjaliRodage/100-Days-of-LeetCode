@@ -1,0 +1,52 @@
+class Solution {
+    public int[] nodesBetweenCriticalPoints(ListNode head) {
+
+        int position = 1;
+
+        int firstCritical = -1;
+        int previousCritical = -1;
+
+        int minDistance = Integer.MAX_VALUE;
+
+        ListNode prev = head;
+        ListNode curr = head.next;
+
+        while (curr != null && curr.next != null) {
+
+            // Check whether curr is a critical point
+            boolean isMax = curr.val > prev.val && curr.val > curr.next.val;
+            boolean isMin = curr.val < prev.val && curr.val < curr.next.val;
+
+            if (isMax || isMin) {
+
+                // First critical point
+                if (firstCritical == -1) {
+                    firstCritical = position;
+                }
+
+                // Calculate distance from previous critical point
+                if (previousCritical != -1) {
+                    minDistance = Math.min(
+                        minDistance,
+                        position - previousCritical
+                    );
+                }
+
+                previousCritical = position;
+            }
+
+            prev = curr;
+            curr = curr.next;
+            position++;
+        }
+
+        // Fewer than two critical points
+        if (firstCritical == previousCritical) {
+            return new int[]{-1, -1};
+        }
+
+        int maxDistance = previousCritical - firstCritical;
+
+        return new int[]{minDistance, maxDistance};
+    }
+}
