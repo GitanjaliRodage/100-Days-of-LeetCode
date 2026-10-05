@@ -1,0 +1,27 @@
+class Solution {
+    public int distinctSubseqII(String s) {
+        final int MOD = 1_000_000_007;
+
+        long[] end = new long[26];
+
+        for (char c : s.toCharArray()) {
+            int index = c - 'a';
+
+            long total = 1;
+
+            for (long x : end) {
+                total = (total + x) % MOD;
+            }
+
+            end[index] = total;
+        }
+
+        long answer = 0;
+
+        for (long x : end) {
+            answer = (answer + x) % MOD;
+        }
+
+        return (int) answer;
+    }
+}
