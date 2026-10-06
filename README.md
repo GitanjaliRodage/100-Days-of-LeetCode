@@ -1,4 +1,4 @@
-# 🚀 100 Days of LeetCode
+# 🚀 500 Days of LeetCode
 
 Welcome to my **100 Days of LeetCode** challenge!
 
