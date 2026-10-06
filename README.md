@@ -1,9 +1,9 @@
 # 🚀 500 Days of LeetCode
 
-Welcome to my **100 Days of LeetCode** challenge!
+Welcome to my **500 Days of LeetCode** challenge!
 
 ## 🎯 Goal
-- Solve LeetCode problems consistently for 100 days.
+- Solve LeetCode problems consistently for 500 days.
 - Strengthen Data Structures & Algorithms.
 - Improve problem-solving skills.
 - Prepare for coding interviews.
