@@ -1,0 +1,76 @@
+class Solution {
+    public List<String> removeInvalidParentheses(String s) {
+        Set<String> set = new HashSet<>();
+        
+        int left = 0, right = 0;
+        
+        for (char c : s.toCharArray()) {
+            if (c == '(') {
+                left++;
+            } else if (c == ')') {
+                if (left > 0) {
+                    left--;
+                } else {
+                    right++;
+                }
+            }
+        }
+        
+        backtrack(s, 0, left, right, set, new StringBuilder());
+        
+        return new ArrayList<>(set);
+    }
+
+    private void backtrack(String s, int index, int leftRemove,
+                            int rightRemove, Set<String> set,
+                            StringBuilder current) {
+
+        if (index == s.length()) {
+            if (leftRemove == 0 && rightRemove == 0 && isValid(current)) {
+                set.add(current.toString());
+            }
+            return;
+        }
+
+        char c = s.charAt(index);
+
+        // Remove current character
+        if (c == '(' && leftRemove > 0) {
+            backtrack(s, index + 1, leftRemove - 1,
+                      rightRemove, set, current);
+        }
+
+        if (c == ')' && rightRemove > 0) {
+            backtrack(s, index + 1, leftRemove,
+                      rightRemove - 1, set, current);
+        }
+
+        // Keep current character
+        current.append(c);
+
+        backtrack(s, index + 1, leftRemove,
+                  rightRemove, set, current);
+
+        current.deleteCharAt(current.length() - 1);
+    }
+
+    private boolean isValid(StringBuilder s) {
+        int balance = 0;
+
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+
+            if (c == '(') {
+                balance++;
+            } else if (c == ')') {
+                balance--;
+
+                if (balance < 0) {
+                    return false;
+                }
+            }
+        }
+
+        return balance == 0;
+    }
+}
