@@ -1,0 +1,37 @@
+class Solution {
+    public long minSumSquareDiff(int[] nums1, int[] nums2, int k1, int k2) {
+        long k = (long) k1 + k2;                 // only the total number of moves matters
+        int n = nums1.length;
+        int[] diffs = new int[n];
+        long total = 0;
+        int mx = 0;
+        for (int i = 0; i < n; i++) {
+            diffs[i] = Math.abs(nums1[i] - nums2[i]);
+            total += diffs[i];
+            mx = Math.max(mx, diffs[i]);
+        }
+        if (total <= k) return 0;                // every difference can become 0
+
+        long[] cnt = new long[mx + 2];
+        for (int d : diffs) cnt[d]++;
+
+        // Always lower the largest differences first.
+        for (int d = mx; d > 0; d--) {
+            if (cnt[d] == 0) continue;
+            if (k >= cnt[d]) {                   // move the whole group from d to d-1
+                k -= cnt[d];
+                cnt[d - 1] += cnt[d];
+                cnt[d] = 0;
+            } else {                             // only k of them can move down by 1
+                cnt[d] -= k;
+                cnt[d - 1] += k;
+                k = 0;
+                break;
+            }
+        }
+
+        long result = 0;
+        for (int d = 0; d <= mx; d++) result += cnt[d] * (long) d * d;
+        return result;
+    }
+}
